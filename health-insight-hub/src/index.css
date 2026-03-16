@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 215 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 15%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 20% 96%;
+    --secondary-foreground: 215 25% 15%;
+
+    --muted: 210 15% 94%;
+    --muted-foreground: 215 15% 50%;
+
+    --accent: 160 84% 39%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 20% 90%;
+    --input: 214 20% 90%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 215 15% 40%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 91% 96%;
+    --sidebar-accent-foreground: 217 91% 50%;
+    --sidebar-border: 214 20% 92%;
+    --sidebar-ring: 217 91% 60%;
+
+    /* Custom tokens */
+    --medical-blue: 217 91% 60%;
+    --medical-green: 160 84% 39%;
+    --medical-light-blue: 217 91% 96%;
+    --medical-light-green: 160 84% 94%;
+    --medical-orange: 25 95% 53%;
+    --medical-light-orange: 25 95% 94%;
+    --medical-red: 0 84% 60%;
+    --medical-light-red: 0 84% 95%;
+
+    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+    --shadow-card-hover: 0 4px 6px -1px rgb(0 0 0 / 0.06), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+    --shadow-elevated: 0 10px 15px -3px rgb(0 0 0 / 0.06), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+  }
+
+  .dark {
+    --background: 215 25% 8%;
+    --foreground: 210 20% 96%;
+    --card: 215 25% 11%;
+    --card-foreground: 210 20% 96%;
+    --popover: 215 25% 11%;
+    --popover-foreground: 210 20% 96%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 215 20% 16%;
+    --secondary-foreground: 210 20% 96%;
+    --muted: 215 20% 16%;
+    --muted-foreground: 215 15% 60%;
+    --accent: 160 84% 39%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 210 20% 96%;
+    --border: 215 20% 18%;
+    --input: 215 20% 18%;
+    --ring: 217 91% 60%;
+    --sidebar-background: 215 25% 10%;
+    --sidebar-foreground: 210 15% 70%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 91% 15%;
+    --sidebar-accent-foreground: 217 91% 70%;
+    --sidebar-border: 215 20% 16%;
+    --sidebar-ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .stat-card {
+    @apply bg-card rounded-xl p-6 border border-border transition-shadow duration-200;
+    box-shadow: var(--shadow-card);
+  }
+  .stat-card:hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .dashboard-section {
+    @apply bg-card rounded-xl p-6 border border-border;
+    box-shadow: var(--shadow-card);
+  }
+
+  .upload-zone {
+    @apply border-2 border-dashed border-primary/30 rounded-xl p-8 text-center transition-colors duration-200 cursor-pointer;
+  }
+  .upload-zone:hover {
+    @apply border-primary/60 bg-primary/5;
+  }
+
+  .table-medical {
+    @apply w-full text-sm;
+  }
+  .table-medical th {
+    @apply text-left px-4 py-3 text-muted-foreground font-medium border-b border-border bg-muted/50;
+  }
+  .table-medical td {
+    @apply px-4 py-3 border-b border-border;
+  }
+  .table-medical tr:hover td {
+    @apply bg-muted/30;
+  }
+
+  .nav-item {
+    @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-sidebar-foreground transition-colors duration-150 cursor-pointer text-sm font-medium;
+  }
+  .nav-item:hover {
+    @apply bg-sidebar-accent text-sidebar-accent-foreground;
+  }
+  .nav-item.active {
+    @apply bg-primary text-primary-foreground;
+  }
+}

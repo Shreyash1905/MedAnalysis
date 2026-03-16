@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Contact Information</title>
+    <!-- Use Google Fonts to match the app aesthetic nicely -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00766c;
+            --primary-foreground: #ffffff;
+            --background: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --red: #ef4444;
+            --red-foreground: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            padding: 24px;
+        }
+
+        .card {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+
+        .icon-wrapper {
+            width: 64px;
+            height: 64px;
+            background-color: #fee2e2;
+            color: var(--red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .icon-wrapper svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+        }
+
+        p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin: 0 0 32px 0;
+            line-height: 1.5;
+        }
+
+        .contacts-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .contact-btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--red);
+            color: var(--red-foreground);
+            box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.39);
+        }
+
+        .btn-secondary {
+            background-color: var(--card);
+            color: var(--text-main);
+            border: 2px solid var(--border);
+        }
+
+        .loading, .error {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 118, 108, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            background-color: #f1f5f9;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card" id="main-card">
+        
+        <!-- Loading State -->
+        <div class="loading" id="loading-state" style="display: flex;">
+            <div class="spinner"></div>
+            <h2 style="font-size: 1.25rem; font-weight: 600; margin: 0;">Accessing Secure Network...</h2>
+            <p style="margin: 0;">Retrieving emergency contacts</p>
+        </div>
+
+        <!-- Error State -->
+        <div class="error" id="error-state">
+            <div class="icon-wrapper" style="background-color: #f1f5f9; color: var(--text-muted);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <h2 style="font-size: 1.25rem; font-weight: 600; margin: 0;">No Tag Found</h2>
+            <p style="margin: 0;">This emergency tag is invalid or no longer exists.</p>
+        </div>
+
+        <!-- Content State -->
+        <div id="content-state" style="display: none;">
+            <div class="badge">
+                <svg style="margin-right: 6px;" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Secure Medical Tag
+            </div>
+
+            <div class="icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            
+            <h1>Emergency Contact Information</h1>
+            <p>Please call the numbers below immediately to notify the patient's family.</p>
+
+            <div class="contacts-wrapper" id="contacts-container">
+                <!-- Buttons injected via JS -->
+            </div>
+            
+            <p style="font-size: 0.75rem; margin-top: 24px; margin-bottom: 0;">
+                No patient medical diagnosis or records are exposed on this public URL to protect privacy bounds.
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<!-- Firebase Modular SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+  // Use the exact same config from your Vite project
+  const firebaseConfig = {
+    apiKey: "dummy-api-key",
+    authDomain: "dummy-auth-domain.firebaseapp.com",
+    projectId: "dummy-project-id",
+    storageBucket: "dummy-storage-bucket.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:dummy"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const loadingState = document.getElementById('loading-state');
+  const errorState = document.getElementById('error-state');
+  const contentState = document.getElementById('content-state');
+  const contactsContainer = document.getElementById('contacts-container');
+
+  async function loadEmergencyData() {
+    try {
+      // Parse URL
+      const params = new URLSearchParams(window.location.search);
+      const uid = params.get("uid");
+
+      if (!uid) {
+        throw new Error("No UID");
+      }
+
+      // Fetch
+      const userRef = doc(db, "Users", uid);
+      const userSnap = await getDoc(userRef);
+
+      if (!userSnap.exists()) {
+        throw new Error("User does not exist");
+      }
+
+      const data = userSnap.data();
+      const c1 = data.emergencyContact1;
+      const c2 = data.emergencyContact2;
+
+      if (!c1 && !c2 && (!data.emergencyContacts || data.emergencyContacts.length === 0)) {
+        throw new Error("No contacts found");
+      }
+
+      // Hide loading, show content
+      loadingState.style.display = 'none';
+      contentState.style.display = 'block';
+
+      // Build Buttons
+      if (c1) {
+          const btn = document.createElement('a');
+          btn.href = `tel:${c1}`;
+          btn.className = 'contact-btn btn-primary';
+          btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Primary Emergency Contact`;
+          contactsContainer.appendChild(btn);
+      }
+
+      if (c2) {
+          const btn = document.createElement('a');
+          btn.href = `tel:${c2}`;
+          btn.className = 'contact-btn btn-secondary';
+          btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Secondary Contact`;
+          contactsContainer.appendChild(btn);
+      }
+
+    } catch (err) {
+      console.error(err);
+      loadingState.style.display = 'none';
+      errorState.style.display = 'flex';
+    }
+  }
+
+  loadEmergencyData();
+</script>
+
+</body>
+</html>
